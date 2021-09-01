@@ -1,0 +1,14 @@
+name: My own GitHub Actions Pipeline
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: List files in the repository
+        run : ls -la 
+      - name: Check out Python version
+        run: pip install -r requirements.txt
+      - name: Execution main python file
+        run : python ./main.py
