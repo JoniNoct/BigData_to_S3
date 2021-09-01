@@ -6,9 +6,13 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
+        with:
+          lfs: true
+      - name: Checkout LFS objects
+        run: git lfs checkout
       - name: List files in the repository
-        run : ls -la 
-      - name: Check out Python version
+        run : ls -la Resources
+      - name: Installing the requirements
         run: pip install -r requirements.txt
       - name: Execution main python file
         run : python ./main.py 'AKIAW2NUVE3PTIYFPP3Y' 'CITJfIpyHUFaojYYCwaMUravsM47c0atCBDswvjp'
