@@ -41,7 +41,7 @@ def bigdata_segmentation(source, dest_folder, dest_file, subject_amount=20000):
     """
 
     # Initializing variables
-    os.mkdir('Output\\Temp\\' + dest_folder)
+    os.mkdir('Output/Temp/' + dest_folder)
     upper_rows = []
     content    = []
     counter    = 0
@@ -58,41 +58,41 @@ def bigdata_segmentation(source, dest_folder, dest_file, subject_amount=20000):
             if line.find("</SUBJECT>"):
                 counter+=1
             if counter == subject_amount:
-                with open("Output\\Temp\\" + dest_folder + "\\" + dest_file + "_part_"+str(index)+".xml", "w") as output:
+                with open("Output/Temp/" + dest_folder + "/" + dest_file + "_part_"+str(index)+".xml", "w") as output:
                     output.write(upper_rows+"".join(content)+"</DATA>")
                     output.close()
                 content = []
                 counter = 0
                 index  += 1
-        with open("Output\\Temp\\" + dest_folder + "\\" + dest_file + "_part_"+str(index)+".xml", "w") as output:
+        with open("Output/Temp/" + dest_folder + "/" + dest_file + "_part_"+str(index)+".xml", "w") as output:
             output.write(upper_rows + "".join(content) + "</DATA>")
             output.close()
             content = []
 
 # Creating temporary folders
-os.mkdir(r"Output\Temp")
-os.mkdir(r"Resources\Temp")
+os.mkdir("Output/Temp")
+os.mkdir("Resources/Temp")
 
 # Unzip the basic data
-fantasy_zip = zipfile.ZipFile(r"Resources\BigData_raw.zip")
-fantasy_zip.extractall(r"Resources\Temp")
+fantasy_zip = zipfile.ZipFile("Resources/BigData_raw.zip")
+fantasy_zip.extractall("Resources/Temp")
 fantasy_zip.close()
 
 # Divide the data into segments of 20,000 units
-bigdata_segmentation(r"Resources\Temp\17-ufop_full_25.08.2021\17.1-EX_XML_EDR_UO_FULL_25.08.2021.xml", "UO_FULL", "17.1-EX_XML_EDR_UO_FULL_25.08.2021")
-bigdata_segmentation(r"Resources\Temp\17-ufop_full_25.08.2021\17.2-EX_XML_EDR_FOP_FULL_25.08.2021.xml", "FOP_FULL", "17.2-EX_XML_EDR_FOP_FULL_25.08.2021")
+bigdata_segmentation("Resources/Temp/17-ufop_full_25.08.2021/17.1-EX_XML_EDR_UO_FULL_25.08.2021.xml", "UO_FULL", "17.1-EX_XML_EDR_UO_FULL_25.08.2021")
+bigdata_segmentation("Resources/Temp/17-ufop_full_25.08.2021/17.2-EX_XML_EDR_FOP_FULL_25.08.2021.xml", "FOP_FULL", "17.2-EX_XML_EDR_FOP_FULL_25.08.2021")
 
 # Delete the temporary folder with the main data
-shutil.rmtree(r"Resources\Temp")
+shutil.rmtree("Resources/Temp")
 
 # Archiving the processed data
-shutil.make_archive(r"Output\Archives\BigData", 'zip', r"Output\Temp")
+shutil.make_archive("Output/Archives/BigData", 'zip', "Output/Temp")
 
 # Delete the temporary folder with the processed data
-shutil.rmtree(r"Output\Temp")
+shutil.rmtree("Output/Temp")
 
 # Upload the resulting archive to AWS S3
-uploaded = upload_to_awsS3(r"Output\Archives\BigData.zip", 'bigdata-to-s3')
+uploaded = upload_to_awsS3("Output/Archives/BigData.zip", 'bigdata-to-s3')
 
 # Delete the resulting archive
-os.remove(r"Output\Archives\BigData.zip")
+os.remove("Output/Archives/BigData.zip")
