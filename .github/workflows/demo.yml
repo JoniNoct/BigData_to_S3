@@ -1,5 +1,5 @@
-name: GitHub Actions Demo
-on: []
+name: My own GitHub Actions Pipeline
+on: [push]
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
