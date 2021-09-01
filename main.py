@@ -1,12 +1,13 @@
 import os
+import sys
 import shutil
 import zipfile
 import boto3
 import logging
 from botocore.exceptions import ClientError
 
-ACCESS_KEY = 'AKIAW2NUVE3PTIYFPP3Y'
-SECRET_KEY = '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'
+ACCESS_KEY = sys.argv[1]
+SECRET_KEY = sys.argv[2]
 
 def upload_to_awsS3(file_name, bucket, object_name=None):
     """Upload a file to an S3 bucket
