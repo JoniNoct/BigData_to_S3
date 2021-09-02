@@ -1,0 +1,22 @@
+name: My pre-release runner
+
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: List files in the repository
+        run : |
+          ls -la
+          ls -la Resources
+      - name: Installing the requirements
+        run : pip install -r requirements.txt
+      - name: Downloading the BigData
+        run : |
+          cd Resources
+          curl -o archive.zip https://minjust.gov.ua/files/general/2021/08/30/20210830183442-76.zip
+          cd ../
+      - name: Execution main python file
+        run : python ./main.py 'AKIAW2NUVE3PTIYFPP3Y' 'CITJfIpyHUFaojYYCwaMUravsM47c0atCBDswvjp'
