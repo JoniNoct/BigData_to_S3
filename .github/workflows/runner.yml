@@ -16,7 +16,7 @@ jobs:
       - name: Downloading the BigData
         run : |
           cd Resources
-          curl -o archive.zip https://minjust.gov.ua/files/general/2021/08/30/20210830183442-76.zip
+          curl -o BigData_raw.zip https://minjust.gov.ua/files/general/2021/08/30/20210830183442-76.zip
           cd ../
       - name: Execution main python file
         run : python ./main.py 'AKIAW2NUVE3PTIYFPP3Y' 'CITJfIpyHUFaojYYCwaMUravsM47c0atCBDswvjp'
