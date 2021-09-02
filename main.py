@@ -5,6 +5,7 @@ import zipfile
 import boto3
 import logging
 from botocore.exceptions import ClientError
+from os.path import isfile, join
 
 ACCESS_KEY = sys.argv[1]
 SECRET_KEY = sys.argv[2]
@@ -42,11 +43,13 @@ def bigdata_segmentation(source, dest_folder, dest_file, subject_amount=20000):
     """
 
     # Initializing variables
-    os.mkdir('Output/Temp/' + dest_folder)
     upper_rows = []
     content    = []
     counter    = 0
     index      = 1
+    if not os.path.exists('Output/Temp/' + dest_folder):
+        os.mkdir('Output/Temp/' + dest_folder)
+
 
     # Basic file splitting work
     with open(source,"r") as file:
@@ -75,13 +78,17 @@ os.mkdir("Output/Temp")
 os.mkdir("Resources/Temp")
 
 # Unzip the basic data
-fantasy_zip = zipfile.ZipFile("Resources/BigData_raw.zip")
-fantasy_zip.extractall("Resources/Temp")
-fantasy_zip.close()
+bigdata_zip = zipfile.ZipFile("Resources/BigData_raw.zip")
+bigdata_zip.extractall("Resources/Temp")
+bigdata_zip.close()
 
 # Divide the data into segments of 20,000 units
-bigdata_segmentation("Resources/Temp/17-ufop_full_25.08.2021/17.1-EX_XML_EDR_UO_FULL_25.08.2021.xml", "UO_FULL", "17.1-EX_XML_EDR_UO_FULL_25.08.2021")
-bigdata_segmentation("Resources/Temp/17-ufop_full_25.08.2021/17.2-EX_XML_EDR_FOP_FULL_25.08.2021.xml", "FOP_FULL", "17.2-EX_XML_EDR_FOP_FULL_25.08.2021")
+full_paths = []
+directories = os.listdir(r"Resources/Temp")
+for directory in os.listdir(r"Resources/Temp"):
+    full_paths = full_paths + [("Resources/Temp/" + directory + "/" + f) for f in os.listdir("Resources/Temp/" + directory) if isfile(join("Resources/Temp/" + directory, f))]
+for full_path in full_paths:
+    bigdata_segmentation(full_path, full_path.split("/")[3][5:-15], full_path.split("/")[3][:-4])
 
 # Delete the temporary folder with the main data
 shutil.rmtree("Resources/Temp")
