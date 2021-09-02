@@ -52,7 +52,7 @@ def bigdata_segmentation(source, dest_folder, dest_file, subject_amount=20000):
 
 
     # Basic file splitting work
-    with open(source,"r") as file:
+    with open(source,"r", encoding='cp1252') as file:
         upper_rows.append(file.readline())
         upper_rows.append(file.readline())
         upper_rows = "".join(upper_rows)
